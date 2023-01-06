@@ -1,49 +1,48 @@
 from flask import Flask, render_template, request
 import requests
 
-api_url = "https://jsonplaceholder.typicode.com/"
+api_url = "http://127.0.0.1:5000/"
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods = ['GET', 'DELETE','POST', 'PUT'])
 def index():
     template = "index.html"
+
+    if request.method == 'DELETE':
+        iddel = request.form.get("iddel")
+        url_delete = api_url + "todos/" + iddel
+        requests.delete(url_delete)
+
+    elif request.method == 'POST':
+        title = request.form.get("title")
+        status = request.form.get("status")
+        user_id = request.form.get("user_id")
+        idt = request.form.get("idt")
+
+        requests.post(api_url + "todos", data={"title": title, "userId": user_id, "status": status})
+
+    elif request.method == 'PUT':
+        title = request.form.get("title")
+        status = request.form.get("status")
+        user_id = request.form.get("user_id")
+        idt = request.form.get('idt')
+        todo_update = api_url + idt
+
+        requests.put(todo_update, data={"title": title, "userId": user_id, "status": status})
+
+    elif request.method == 'GET':
+        id_get = str(request.form.get("id_get"))
+        user_todo = api_url + "todos/" + id_get + "/todos"
+
+        requests.get(user_todo)
+
     return render_template(template)
 
-@app.route("/todos", methods = ['GET', 'DELETE','POST', 'PUT'])
+@app.route("/todos")
 def todos():
     template = "todos.html"
     todos = requests.get(api_url + "todos").json()
 
-    if request.method == 'DELETE':
-        id_todo_delete = request.form.get('id_todo_delete')
-        url_delete = api_url + "todos/" + id_todo_delete
-        requests.delete(url_delete)
-
-        todos = requests.get(api_url + "todos").json()
-
-        return render_template(template, todos=todos)
-
-    elif request.method == 'POST':
-        title = request.form.get("title")
-        completed = request.form.get("completed")
-        user_id = request.form.get("user_id")
-
-        requests.post(api_url + "todos", data={"title": title, "userId": user_id, "completed": completed})
-        todos = requests.get(api_url + "todos").json()
-
-        return render_template(template, todos=todos)
-
-    elif request.method == 'PUT':
-        title = request.form.get("title")
-        completed = request.form.get("completed")
-        user_id = request.form.get("user_id")
-        id_todo_update = request.form.get('id_todo_update')
-        todo_update = api_url + id_todo_update
-
-        requests.put(todo_update, data={"title": title, "userId": user_id, "completed": completed})
-        todos = requests.get(api_url + "todos").json()
-
-        return render_template(template, todos=todos)
 
     return render_template(template, todos=todos)
 
