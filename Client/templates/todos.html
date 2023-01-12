@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %} JsonPlaceHolder - To-dos {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <h2>To-dos</h2>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="d-flex gap-5">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTodo">
+                        Nova tarefa
+                    </button>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTodo">
+                        Deletar tarefa
+                    </button>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateTodo">
+                        Atualizar tarefa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-4">
+            <table class="table table-striped table-responsive">
+                <tr>
+                    <td scope="col">ID</td>
+                    <td scope="col">Título</td>
+                    <td scope="col">ID do usuário</td>
+                    <td scope="col">Status</td>
+                </tr>
+                {% for todos in todos %}
+                <tr>
+                    <td scope="row">{{ todos.id }}</td>
+                    <td>{{ todos.title }}</td>
+                    <td>{{ todos.userId }}</td>
+                    <td>
+                        {% if todos.completed == true %}
+                        Concluído
+                        {% else %}
+                        Não concluído
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="createTodo" tabindex="-1" aria-labelledby="createTodoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTodoLabel">Criar usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Título da tarefa:</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                        <label for="userId" class="form-label">ID do usuário:</label>
+                        <input type="text" class="form-control" id="userId" name="userId">
+                        <label for="completed" class="form-label">Descrição:</label>
+                        <input type="text" class="form-control" id="completed" name="completed">
+                    </div>
+                    <button type="submit" class="btn btn-success">Criar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteTodo" tabindex="-1" aria-labelledby="deleteTodoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTodoLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="DELETE">
+                    <div class="mb-3">
+                        <label for="id_todo_delete" class="form-label">ID da tarefa:</label>
+                        <input type="text" class="form-control" id="id_todo_delete" name="id_todo_delete">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="updateTodo" tabindex="-1" aria-labelledby="updateTodoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateTodoLabel">Atualizar usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="PUT">
+                    <div class="mb-3">
+                        <label for="id_todo_update" class="form-label">Id da tarefa:</label>
+                        <input type="text" class="form-control" id="id_todo_update" name="id_todo_update">
+                        <label for="title" class="form-label">Título da tarefa:</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                        <label for="userId" class="form-label">ID do usuário:</label>
+                        <input type="text" class="form-control" id="userId" name="userId">
+                        <label for="completed" class="form-label">Descrição:</label>
+                        <input type="text" class="form-control" id="completed" name="completed">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Altualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
